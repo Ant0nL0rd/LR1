@@ -16,7 +16,7 @@ public:
     String operator=(String& other);
     int search(String& other);
     char operator[](int a);
-    String& operator+(String& other);
+    String operator+(String& other);
 
 };
 

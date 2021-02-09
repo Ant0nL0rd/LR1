@@ -75,7 +75,7 @@ char String::operator[](int a){
     return str[a];
 }
 
-String& String::operator+(String& other){
+String String::operator+(String& other){
     char* stra = new char[size+other.size];
     for(int i = 0; i < size; ++i){
         stra[i] = str[i];
@@ -83,9 +83,9 @@ String& String::operator+(String& other){
     for(int i = 0; i < other.size; ++i){
         stra[i + size] = str[i];
     }
-    String *a = new String(stra);
+    String a(stra);
     delete[]stra;
-    return *a;
+    return a;
 }
 
 std::ostream& operator<<(std::ostream& os, String& st){
