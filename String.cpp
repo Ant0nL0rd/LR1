@@ -15,10 +15,7 @@ String::String(String& other){
 
 String::String(const char* str_) {
     int j = 0;
-    while(true){
-        if(str_[j]=='\0'){
-            break;
-        }
+    while(str_[j]!='\0'){
         ++j;
     }
     size = j;
@@ -32,8 +29,34 @@ String::~String(){
     delete[]str;
 }
 
+void String::change(int n, char ch){
+    str[n] = ch;
+}
+
+int String::get_size(){
+    return size;
+}
+
 bool String::operator==(String& other){
-    return std::strcmp(this->str, other.str)==0;
+    if(size == other.size){
+        for(int i = 0; i < size; ++i){
+            if(str[i]!=other.str[i]){
+                return false;
+            }
+        }
+        return true;
+    } else{
+        return false;
+    }
+}
+
+
+String String::operator=(String& other){
+    size = other.size;
+    str = new char[size];
+    for(int i = 0; i < size; ++i){
+        str[i] = other.str[i];
+    }
 }
 
 int String::search(String& other){
@@ -60,29 +83,32 @@ String& String::operator+(String& other){
     for(int i = 0; i < other.size; ++i){
         stra[i + size] = str[i];
     }
-    String a(stra);
-    return a;
+    String *a = new String(stra);
+    delete[]stra;
+    return *a;
 }
 
-std::ostream& String::operator<<(std::ostream& os){
-    os << str;
+std::ostream& operator<<(std::ostream& os, String& st){
+    int i = 0;
+    while(st[i] != '/n'){
+
+        os << st.str[i++];
+    }
     return os;
 }
 
-std::istream& String::operator>>(std::istream& is){
-    size = 0;
-    str = (char*)malloc(128);
+std::istream& operator>>(std::istream& is, String& st){
+    st.size = 0;
+    st.str = (char*)malloc(128);
     int cap = 128;
     int c = EOF;
-    int i =0;
     while (( c = getchar() ) != '\n' && c != EOF) {
-        str[i++] = (char) c;
-        ++size;
-        if (i == cap) {
-            cap = i + 128;
-            str = (char*)realloc(str, cap);
+        st.str[st.size++] = (char) c;
+        if (st.size == cap) {
+            cap = st.size + 128;
+            st.str = (char*)realloc(st.str, cap);
         }
     }
-    str[i] = '\0';
+    st.str[st.size] = '\0';
     return is;
 }
