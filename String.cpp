@@ -1,6 +1,7 @@
 #include "String.h"
 #include <algorithm>
 #include <cstring>
+#include <cstdlib>
 
 String::String(): str(nullptr), size(0){}
 
@@ -69,15 +70,19 @@ std::ostream& String::operator<<(std::ostream& os){
 }
 
 std::istream& String::operator>>(std::istream& is){
-    str = new char[500];
-    is >> str;
-    int j = 0;
-    while(true){
-        if(str[j]=='\0'){
-            break;
+    size = 0;
+    str = (char*)malloc(128);
+    int cap = 128;
+    int c = EOF;
+    int i =0;
+    while (( c = getchar() ) != '\n' && c != EOF) {
+        str[i++] = (char) c;
+        ++size;
+        if (i == cap) {
+            cap = i + 128;
+            str = (char*)realloc(str, cap);
         }
-        ++j;
     }
-    size = j;
+    str[i] = '\0';
     return is;
 }
